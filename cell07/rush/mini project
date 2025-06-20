@@ -1,0 +1,86 @@
+tasks = []
+task_id = 1
+
+def add_task():
+    global task_id
+    name = input("Pair Programming: ")
+    task_type = input("Sheep Farm (crops/livestock/other): ")
+    task = {
+        "id": task_id,
+        "name": name,
+        "type": task_type,
+        "status": "pending"
+    }
+    tasks.append(task)
+    print("✅ เพิ่มงานเรียบร้อย!")
+    task_id += 1
+
+def show_tasks():
+    if not tasks:
+        print("📭 ไม่มีงานในระบบ")
+    else:
+        for t in tasks:
+            print(f"[{t['id']}] {t['name']} - ประเภท: {t['type']} - สถานะ: {t['status']}")
+
+def delete_task():
+    task_id_input = int(input("กรอก ID งานที่ต้องการลบ: "))
+    for t in tasks:
+        if t["id"] == task_id_input:
+            if t["status"] in ["completed", "canceled"]:
+                tasks.remove(t)
+                print("🗑️ ลบงานเรียบร้อย")
+                return
+            else:
+                print("⚠️ ลบได้เฉพาะงานที่เสร็จสิ้นหรือถูกยกเลิกเท่านั้น")
+                return
+    print("❌ ไม่พบงาน")
+
+def update_status():
+    task_id_input = int(input("กรอก ID งานที่ต้องเปลี่ยนสถานะ: "))
+    new_status = input("สถานะใหม่ (pending/completed/canceled): ")
+    for t in tasks:
+        if t["id"] == task_id_input:
+            t["status"] = new_status
+            print("🔄 อัปเดตสถานะเรียบร้อย")
+            return
+    print("❌ ไม่พบงาน")
+
+def summarize_tasks():
+    summary = {}
+    for t in tasks:
+        task_type = t["type"]
+        summary[task_type] = summary.get(task_type, 0) + 1
+    print("📊 สรุปจำนวนงาน:")
+    for ttype, count in summary.items():
+        print(f"- {ttype}: {count} งาน")
+
+def main():
+    while True:
+        print("\n=== เมนูหลัก ===")
+        print("1. เพิ่มงาน")
+        print("2. แสดงงานทั้งหมด")
+        print("3. ลบงาน (ถ้าเสร็จสิ้นหรือยกเลิก)")
+        print("4. เปลี่ยนสถานะงาน")
+        print("5. สรุปจำนวนงานตามประเภท")
+        print("6. ออกจากโปรแกรม")
+
+        choice = input("เลือกเมนู (1-6): ")
+
+        if choice == "1":
+            add_task()
+        elif choice == "2":
+            show_tasks()
+        elif choice == "3":
+            delete_task()
+        elif choice == "4":
+            update_status()
+        elif choice == "5":
+            summarize_tasks()
+        elif choice == "6":
+            print("👋 ออกจากโปรแกรมแล้ว")
+            break
+        else:
+            print("❌ กรุณาเลือกเมนูให้ถูกต้อง (1-6)")
+
+if __name__ == "__main__":
+    main()
